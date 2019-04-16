@@ -1,0 +1,18 @@
+<div class="search">
+  <input type="text" placeholder="Поиск по номеру рейса">
+  <span>{{'Список рейсов за ' + date + ' апреля ' + hour + ':00 - ' + (hour + 1) +':00'}}</span>
+</div>
+
+<div class="flight" *ngFor="let flight of flightData">
+  <div class="left-inf">
+    <span>{{flight.arrivalOrDepartureTime}}</span>
+    <span>{{flight.arrivalOrDeparturePlace}}</span>
+  </div>
+
+  <div class="right-inf">
+    <span>{{flight.flightNumber}}</span>
+    <span>{{flight.arrivalOrDepartureGate}}</span>
+    <span>{{flight.status}}</span>
+  </div>
+</div>
+

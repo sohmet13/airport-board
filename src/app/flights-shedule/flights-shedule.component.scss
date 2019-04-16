@@ -1,0 +1,43 @@
+@import 'src/styles/variables';
+
+.search {
+  border-bottom: 3px solid $indigoDark;
+  display: flex;
+  justify-content: space-between;
+  color: $indigoDark;
+  align-items: center;
+
+  input {
+    flex: 1;
+    height: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 20px;
+
+    &::placeholder {
+      color: $indigoDark;
+    }
+  }
+}
+
+.flight {
+  height: 100px;
+  font-size: 24px;
+  color: $indigo;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $indigoDark;
+
+  .left-inf {
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .right-inf {
+    @extend .left-inf;
+    width: 40%;
+  }
+}
