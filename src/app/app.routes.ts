@@ -1,13 +1,13 @@
 import {Routes} from '@angular/router';
 import {FlightsSheduleComponent} from './flights-shedule/flights-shedule.component';
 import {GetArrivingFlightsResolver} from './resolvers/get-arriving-flights.resolver';
-import {GetDeparturingFlightsResolver} from "./resolvers/get-departuring-flights.resolver";
+import {GetDeparturingFlightsResolver} from './resolvers/get-departuring-flights.resolver';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/arrival',
+    redirectTo: '/departure',
   },
   {
     path: 'arrival',

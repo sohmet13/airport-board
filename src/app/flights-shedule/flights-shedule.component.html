@@ -1,11 +1,15 @@
+<span class="period">
+  {{'Рейсы за ' + (periodTime | date:'d') + ' апреля ' + (periodTime | date:'H') + ':00 - ' + ((periodTime | date:'H') * 1 + 1) +':00'}}
+</span>
+
 <div class="search">
-  <input type="text" placeholder="Поиск по номеру рейса">
-  <span>{{'Список рейсов за ' + date + ' апреля ' + hour + ':00 - ' + (hour + 1) +':00'}}</span>
+  <input class="search-child" type="text" placeholder="Поиск по номеру рейса">
+  <button class="search-child" (click)="toggleDelayed()">{{buttonText}}</button>
 </div>
 
-<div class="flight" *ngFor="let flight of flightData">
+<div class="flight" *ngFor="let flight of flightData | filter:'status':filterValue">
   <div class="left-inf">
-    <span>{{flight.arrivalOrDepartureTime}}</span>
+    <span>{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
     <span>{{flight.arrivalOrDeparturePlace}}</span>
   </div>
 

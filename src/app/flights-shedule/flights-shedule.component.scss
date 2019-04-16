@@ -1,23 +1,38 @@
 @import 'src/styles/variables';
 
+.period {
+  text-align: right;
+  display: inherit;
+  color: $indigoDark;
+  margin-bottom: 10px;
+}
+
 .search {
   border-bottom: 3px solid $indigoDark;
   display: flex;
   justify-content: space-between;
-  color: $indigoDark;
   align-items: center;
+  height: 30px;
+
+  .search-child {
+    height: 100%;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: $indigoDark;
+    outline: none;
+  }
 
   input {
     flex: 1;
-    height: 30px;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 20px;
 
     &::placeholder {
       color: $indigoDark;
     }
+  }
+
+  button {
+    cursor: pointer;
   }
 }
 

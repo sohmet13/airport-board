@@ -14,7 +14,7 @@ h1 {
 .filters {
   display: flex;
   font-size: 50px;
-  width: 40%;
+  max-width: 400px;
   justify-content: space-between;
   color: $indigo;
   margin: 50px 0 100px;
@@ -23,5 +23,9 @@ h1 {
     outline: none;
     color: $indigoDark;
     cursor: pointer;
+  }
+
+  .active {
+    border-bottom: 3px solid $indigoDark;
   }
 }

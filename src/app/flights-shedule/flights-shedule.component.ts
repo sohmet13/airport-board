@@ -1,51 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {filter, map, pluck} from "rxjs/internal/operators";
-import {FlightData} from "../commons";
-import {FlightStatuses} from "../commons/flight-statuses.enum";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {pluck} from 'rxjs/internal/operators';
+import {Subscription} from 'rxjs';
+import {FlightData, FlightStatuses} from '../commons';
 
 @Component({
   selector: 'app-flights-shedule',
   templateUrl: './flights-shedule.component.html',
   styleUrls: ['./flights-shedule.component.scss']
 })
-export class FlightsSheduleComponent implements OnInit {
+export class FlightsSheduleComponent implements OnInit, OnDestroy {
 
-  readonly date = new Date(Date.now()).getDate();
-  readonly hour = new Date(Date.now()).getHours();
-
+  periodTime: string;
   flightData: FlightData[];
+
+  showDelayed = false;
+  buttonText = 'Показать задержанные';
+  filterValue;
+
+  routerDataSubscription: Subscription;
 
   constructor(private _route: ActivatedRoute) { }
 
   ngOnInit() {
-    // TODO отписаться
-    this._route.data.pipe(
-      pluck('flights'),
-      pluck('flightStatuses'),
-      filter(flightStatus => Array.isArray(flightStatus)),
-      map((flightStatus: any[]) => {console.log(flightStatus); return flightStatus.map(this._parseFlightData.bind(this))})
-    ).subscribe((flightData: FlightData[]) => this.flightData = flightData);
+    this.routerDataSubscription = this._route.data
+      .pipe(pluck('flights'))
+      .subscribe(this._setDataForView.bind(this));
   }
 
-  private _parseFlightData(flightData): FlightData {
-    const hour = new Date(flightData.arrivalDate.dateLocal).getHours();
-    const minute = new Date(flightData.arrivalDate.dateLocal).getMinutes();
-
-    const arrivalGate = flightData.airportResources.arrivalGate;
-    // TODO проверить arrivalOrDepartureGate на депарртьюрес
-    return {
-      flightId: flightData.flightId,
-      arrivalOrDepartureTime: `${this._setTimeString(hour)}:${this._setTimeString(minute)}`,
-      arrivalOrDeparturePlace: flightData.departureAirportFsCode,
-      flightNumber: `${flightData.carrierFsCode} ${flightData.flightNumber}`,
-      arrivalOrDepartureGate: `${flightData.airportResources.arrivalTerminal} ${arrivalGate == null ? '' : arrivalGate}`,
-      status: FlightStatuses[flightData.status]
-    };
+  toggleDelayed(): void {
+    this.showDelayed = !this.showDelayed;
+    this.buttonText = this.showDelayed ? 'Показать все' : 'Показать задержанные';
+    this.filterValue = this.showDelayed ? FlightStatuses.D : null;
   }
 
-  private _setTimeString(num: number): string | number {
-    return num > 9 ? num : '0' + num;
+  private _setDataForView(flightData: FlightData[]): void {
+    this.flightData = flightData;
+    this.periodTime = flightData[0].arrivalOrDepartureTime;
+  }
+
+  ngOnDestroy() {
+    this.routerDataSubscription.unsubscribe();
   }
 
 }

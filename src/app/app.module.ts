@@ -8,12 +8,14 @@ import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {GetArrivingFlightsResolver} from './resolvers/get-arriving-flights.resolver';
 import {HttpClientModule} from '@angular/common/http';
-import {GetDeparturingFlightsResolver} from "./resolvers/get-departuring-flights.resolver";
+import {GetDeparturingFlightsResolver} from './resolvers/get-departuring-flights.resolver';
+import {FilterPipe} from './commons';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FlightsSheduleComponent
+    FlightsSheduleComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
