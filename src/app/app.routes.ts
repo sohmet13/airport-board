@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+
 import {FlightsSheduleComponent} from './flights-shedule/flights-shedule.component';
 import {GetArrivingFlightsResolver} from './resolvers/get-arriving-flights.resolver';
 import {GetDeparturingFlightsResolver} from './resolvers/get-departuring-flights.resolver';

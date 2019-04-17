@@ -6,6 +6,6 @@ export class FilterPipe implements PipeTransform {
     if (property == null || value == null) {
       return array;
     }
-    return array.filter(item => item[property] === value);
+    return array.filter(item => item[property].match(value));
   }
 }

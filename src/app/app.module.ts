@@ -1,13 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { FlightsSheduleComponent } from './flights-shedule/flights-shedule.component';
-import {GetFlightsService} from './service/get-flights.service';
-import {RouterModule} from '@angular/router';
-import {routes} from './app.routes';
-import {GetArrivingFlightsResolver} from './resolvers/get-arriving-flights.resolver';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {RouterModule} from '@angular/router';
+
+import {routes} from './app.routes';
+import {AppComponent} from './app.component';
+import {FlightsSheduleComponent} from './flights-shedule/flights-shedule.component';
+import {GetFlightsService} from './service/get-flights.service';
+import {GetArrivingFlightsResolver} from './resolvers/get-arriving-flights.resolver';
 import {GetDeparturingFlightsResolver} from './resolvers/get-departuring-flights.resolver';
 import {FilterPipe} from './commons';
 
@@ -20,9 +21,15 @@ import {FilterPipe} from './commons';
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [GetFlightsService, GetArrivingFlightsResolver, GetDeparturingFlightsResolver],
+  providers: [
+    GetFlightsService,
+    GetArrivingFlightsResolver,
+    GetDeparturingFlightsResolver
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

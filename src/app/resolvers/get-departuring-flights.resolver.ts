@@ -1,8 +1,11 @@
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {GetFlightsService} from "../service/get-flights.service";
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
-import {filter, map, pluck} from 'rxjs/operators';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {Injectable} from '@angular/core';
+
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {catchError} from 'rxjs/internal/operators';
+
+import {GetFlightsService} from '../service/get-flights.service';
 import {FlightData, FlightStatuses} from '../commons';
 
 @Injectable({
@@ -10,7 +13,8 @@ import {FlightData, FlightStatuses} from '../commons';
 })
 export class GetDeparturingFlightsResolver implements Resolve<any> {
 
-  constructor(private _getFlightService: GetFlightsService) {}
+  constructor(private _getFlightService: GetFlightsService) {
+  }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const date = new Date(Date.now());
@@ -18,9 +22,8 @@ export class GetDeparturingFlightsResolver implements Resolve<any> {
     return this._getFlightService
       .getDepatureFlights(date.getMonth() + 1, date.getDate(), date.getHours())
       .pipe(
-        pluck('flightStatuses'),
-        filter(flightStatus => Array.isArray(flightStatus)),
-        map((flightStatus: any[]) => flightStatus.map(this._parseFlightData.bind(this)))
+        map((flightStatus: any) => flightStatus.map(this._parseFlightData.bind(this))),
+        catchError(error => of(error))
       );
   }
 
@@ -30,8 +33,9 @@ export class GetDeparturingFlightsResolver implements Resolve<any> {
     return {
       flightId: flightData.flightId,
       arrivalOrDepartureTime: flightData.departureDate.dateLocal,
-      arrivalOrDeparturePlace: flightData.arrivalAirportFsCode,
-      flightNumber: `${flightData.carrierFsCode} ${flightData.flightNumber}`,
+      arrivalOrDeparturePlace: this._getFlightService.airportCodes[flightData.arrivalAirportFsCode],
+      airlineCode: flightData.carrierFsCode,
+      flightNumber: flightData.flightNumber,
       arrivalOrDepartureGate: `${flightData.airportResources.departureTerminal} ${departureGate == null ? '' : departureGate}`,
       status: FlightStatuses[flightData.status]
     };

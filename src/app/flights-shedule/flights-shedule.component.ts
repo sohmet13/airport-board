@@ -1,8 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {pluck} from 'rxjs/internal/operators';
+import {HttpErrorResponse} from '@angular/common/http';
+
+import {filter, pluck} from 'rxjs/internal/operators';
 import {Subscription} from 'rxjs';
+
 import {FlightData, FlightStatuses} from '../commons';
+import {GetFlightsService} from '../service/get-flights.service';
 
 @Component({
   selector: 'app-flights-shedule',
@@ -11,36 +15,42 @@ import {FlightData, FlightStatuses} from '../commons';
 })
 export class FlightsSheduleComponent implements OnInit, OnDestroy {
 
-  periodTime: string;
+  readonly months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+
+  search = '';
+
   flightData: FlightData[];
 
-  showDelayed = false;
   buttonText = 'Показать задержанные';
-  filterValue;
+  filterValue: FlightStatuses;
 
-  routerDataSubscription: Subscription;
+  private _showDelayed = false;
+  private _routerDataSubscription: Subscription;
 
-  constructor(private _route: ActivatedRoute) { }
+  constructor(private _route: ActivatedRoute,
+              public getFlightService: GetFlightsService) {
+  }
 
   ngOnInit() {
-    this.routerDataSubscription = this._route.data
-      .pipe(pluck('flights'))
-      .subscribe(this._setDataForView.bind(this));
+    this._routerDataSubscription = this._route.data
+      .pipe(
+        pluck('flights'),
+        filter(data => data && !(data instanceof HttpErrorResponse))
+      ).subscribe(this._setDataForView.bind(this));
   }
 
   toggleDelayed(): void {
-    this.showDelayed = !this.showDelayed;
-    this.buttonText = this.showDelayed ? 'Показать все' : 'Показать задержанные';
-    this.filterValue = this.showDelayed ? FlightStatuses.D : null;
+    this._showDelayed = !this._showDelayed;
+    this.buttonText = this._showDelayed ? 'Показать все' : 'Показать задержанные';
+    this.filterValue = this._showDelayed ? FlightStatuses.D : null;
   }
 
   private _setDataForView(flightData: FlightData[]): void {
-    this.flightData = flightData;
-    this.periodTime = flightData[0].arrivalOrDepartureTime;
+    this.flightData = flightData.sort((a, b) => Date.parse(a.arrivalOrDepartureTime) - Date.parse(b.arrivalOrDepartureTime));
   }
 
   ngOnDestroy() {
-    this.routerDataSubscription.unsubscribe();
+    this._routerDataSubscription.unsubscribe();
   }
 
 }

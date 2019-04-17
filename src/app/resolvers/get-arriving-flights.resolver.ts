@@ -1,9 +1,13 @@
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+
+import {catchError} from 'rxjs/internal/operators';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+
 import {GetFlightsService} from '../service/get-flights.service';
-import {filter, map, pluck} from 'rxjs/operators';
 import {FlightData, FlightStatuses} from '../commons';
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +22,8 @@ export class GetArrivingFlightsResolver implements Resolve<any> {
     return this._getFlightService
       .getArrivalFlights(date.getMonth() + 1, date.getDate(), date.getHours())
       .pipe(
-        pluck('flightStatuses'),
-        filter(flightStatus => Array.isArray(flightStatus)),
-        map((flightStatus: any[]) => flightStatus.map(this._parseFlightData.bind(this)))
+        map((flightStatus: any[]) => flightStatus.map(this._parseFlightData.bind(this))),
+        catchError(error => of(error))
       );
   }
 
@@ -30,8 +33,9 @@ export class GetArrivingFlightsResolver implements Resolve<any> {
     return {
       flightId: flightData.flightId,
       arrivalOrDepartureTime: flightData.arrivalDate.dateLocal,
-      arrivalOrDeparturePlace: flightData.departureAirportFsCode,
-      flightNumber: `${flightData.carrierFsCode} ${flightData.flightNumber}`,
+      arrivalOrDeparturePlace: this._getFlightService.airportCodes[flightData.departureAirportFsCode],
+      airlineCode: flightData.carrierFsCode,
+      flightNumber: flightData.flightNumber,
       arrivalOrDepartureGate: `${flightData.airportResources.arrivalTerminal} ${arrivalGate == null ? '' : arrivalGate}`,
       status: FlightStatuses[flightData.status]
     };

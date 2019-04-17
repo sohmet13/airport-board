@@ -3,7 +3,7 @@
 .period {
   text-align: right;
   display: inherit;
-  color: $indigoDark;
+  color: $indigo;
   margin-bottom: 10px;
 }
 
@@ -27,7 +27,7 @@
     flex: 1;
 
     &::placeholder {
-      color: $indigoDark;
+      color: $indigoLight;
     }
   }
 
@@ -45,14 +45,32 @@
   align-items: center;
   border-bottom: 1px solid $indigoDark;
 
-  .left-inf {
-    width: 15%;
-    display: flex;
-    justify-content: space-between;
+  .left-inf span:first-child {
+    margin-right: 50px;
   }
 
   .right-inf {
-    @extend .left-inf;
+    display: flex;
+    justify-content: space-between;
     width: 40%;
+
+    span:first-child, span:nth-child(2) {
+      width: 100px;
+      text-align: left;
+    }
   }
+}
+
+.table:empty ~ .nothing-found {
+  display: flex;
+}
+
+.nothing-found {
+  display: none;
+  justify-content: center;
+}
+
+.error {
+  color: red;
+  justify-content: center;
 }
