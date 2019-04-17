@@ -1,0 +1,45 @@
+<span class="period" *ngIf="flightData">
+  {{'Рейсы за ' +
+  getFlightService.requestTime.day +
+  '.' +
+  months[getFlightService.requestTime.month - 1] +
+  ' ' +
+  getFlightService.requestTime.hour +
+  ':00 - ' +
+  (getFlightService.requestTime.hour * 1 + 1) +
+  ':00'}}
+</span>
+
+<div class="search">
+  <input class="search-child" type="text" placeholder="Поиск по номеру рейса" [(ngModel)]="search">
+  <button class="search-child" (click)="toggleDelayed()">{{buttonText}}</button>
+</div>
+
+<ng-container *ngIf="flightData; else error">
+  <div class="table">
+    <div class="flight"
+         *ngFor="let flight of flightData | filter:'status':filterValue | filter:'flightNumber':search">
+      <div class="left-inf">
+        <span>{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
+        <span>{{flight.arrivalOrDeparturePlace}}</span>
+      </div>
+
+      <div class="right-inf">
+        <span>{{flight.airlineCode + ' ' + flight.flightNumber}}</span>
+        <span>{{flight.arrivalOrDepartureGate}}</span>
+        <span>{{flight.status}}</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nothing-found flight" *ngIf="flightData">
+    <span>По вашему запросу ничего не найдено</span>
+  </div>
+</ng-container>
+
+<ng-template #error>
+  <div class="flight error">
+    <span>Произошла ошибка при получении данных с сервера. Попробуйте повторить запрос</span>
+  </div>
+</ng-template>

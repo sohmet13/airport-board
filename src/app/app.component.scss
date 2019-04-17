@@ -1,0 +1,31 @@
+@import 'src/styles/variables';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+}
+
+h1 {
+  color: $indigoLight;
+  cursor: default;
+}
+
+.filters {
+  display: flex;
+  font-size: 50px;
+  max-width: 400px;
+  justify-content: space-between;
+  color: $indigo;
+  margin: 50px 0 100px;
+
+  span:hover, .active {
+    outline: none;
+    color: $indigoDark;
+    cursor: pointer;
+  }
+
+  .active {
+    border-bottom: 3px solid $indigoDark;
+  }
+}
