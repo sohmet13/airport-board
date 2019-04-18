@@ -29,7 +29,7 @@ export class GetFlightsService {
   getArrivalFlights(month: number, day: number, hourOfDay: number): Observable<any> {
     return this._http
       .get(
-        !this.isHttps ? 'src/assets/json/arrival.json' : this._urls.arrivalFlights(month, day, hourOfDay),
+        !this.isHttps ? 'assets/json/arrival.json' : this._urls.arrivalFlights(month, day, hourOfDay),
         this.isHttps ? {params: {appId: this.appId, appKey: this.appKey}} : {})
       .pipe(map(this._setAirportCodes.bind(this)));
   }
@@ -37,7 +37,7 @@ export class GetFlightsService {
   getDepatureFlights(month: number, day: number, hourOfDay: number): Observable<any> {
     return this._http
       .get(
-        !this.isHttps ? 'src/assets/json/departure.json' : this._urls.departureFlights(month, day, hourOfDay),
+        !this.isHttps ? 'assets/json/departure.json' : this._urls.departureFlights(month, day, hourOfDay),
         this.isHttps ? {params: {appId: this.appId, appKey: this.appKey}} : {})
       .pipe(map(this._setAirportCodes.bind(this)));
   }

@@ -18,20 +18,22 @@
 <div class="table">
   <ng-container *ngIf="flightData; else error">
     <div class="flights-container">
-      <div class="flight table__item_border"
-           *ngFor="let flight of flightData | filter:'status':filterValue | filter:'flightNumber':search">
-        <div class="flight__left-text-block">
-          <span class="flight__text-item flight__text-item_margin">{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
-          <span class="flight__text-item">{{flight.arrivalOrDeparturePlace}}</span>
-        </div>
+      <cdk-virtual-scroll-viewport style="height: 100vh" itemSize="90">
+        <div class="flight table__item_border"
+             *cdkVirtualFor="let flight of flightData | filter:'status':filterValue | filter:'flightNumber':search">
+          <div class="flight__left-text-block">
+            <span class="flight__text-item flight__text-item_margin">{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
+            <span class="flight__text-item">{{flight.arrivalOrDeparturePlace}}</span>
+          </div>
 
-        <div class="flight__right-text-block">
-          <span class="flight__text-item flight__text-item_fixed-width">{{flight.airlineCode + ' ' + flight.flightNumber}}</span>
-          <span class="flight__text-item flight__text-item_fixed-width">{{flight.arrivalOrDepartureGate}}</span>
-          <span class="flight__text-item">{{flight.status}}</span>
-        </div>
+          <div class="flight__right-text-block">
+            <span class="flight__text-item flight__text-item_fixed-width">{{flight.airlineCode + ' ' + flight.flightNumber}}</span>
+            <span class="flight__text-item flight__text-item_fixed-width">{{flight.arrivalOrDepartureGate}}</span>
+            <span class="flight__text-item">{{flight.status}}</span>
+          </div>
 
-      </div>
+        </div>
+      </cdk-virtual-scroll-viewport>
     </div>
 
     <div class="table__no-flights table__no-flights_display-none table__item_border" *ngIf="flightData">
