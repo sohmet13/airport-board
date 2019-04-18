@@ -2,38 +2,48 @@
 
 .period {
   text-align: right;
-  display: inherit;
+  display: block;
   color: $indigo;
-  margin-bottom: 10px;
+
+  &_margin {
+    margin-bottom: 10px;
+  }
 }
 
 .search {
-  border-bottom: 3px solid $indigoDark;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 30px;
 
-  .search-child {
+  &_border-bottom {
+    border-bottom: 3px solid $indigoDark;
+  }
+
+  &__element {
     height: 100%;
     background: transparent;
     border: none;
     font-size: 20px;
     color: $indigoDark;
     outline: none;
-  }
 
-  input {
-    flex: 1;
+    &_flex {
+      flex: 1;
 
-    &::placeholder {
-      color: $indigoLight;
+      &::placeholder {
+        color: $indigoLight;
+      }
+    }
+
+    &_cursor-pointer {
+      cursor: pointer;
     }
   }
+}
 
-  button {
-    cursor: pointer;
-  }
+.flights-container:empty ~ .table__no-flights_display-none {
+  display: flex;
 }
 
 .flight {
@@ -43,34 +53,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid $indigoDark;
 
-  .left-inf span:first-child {
-    margin-right: 50px;
-  }
-
-  .right-inf {
+  &__right-text-block {
     display: flex;
     justify-content: space-between;
     width: 40%;
+  }
 
-    span:first-child, span:nth-child(2) {
-      width: 100px;
-      text-align: left;
-    }
+  &__text-item_fixed-width {
+    width: 100px;
+    text-align: left;
+  }
+
+  &__text-item_margin {
+    margin-right: 50px;
   }
 }
 
-.table:empty ~ .nothing-found {
-  display: flex;
-}
+.table {
 
-.nothing-found {
-  display: none;
-  justify-content: center;
-}
+  &__item_border {
+    border-bottom: 1px solid $indigoDark;
+  }
 
-.error {
-  color: red;
-  justify-content: center;
+  &__no-flights {
+    @extend .flight;
+    justify-content: center;
+  }
+
+  &__no-flights_display-none {
+    display: none;
+  }
+
+  &__no-flights_error {
+    color: red;
+  }
 }
