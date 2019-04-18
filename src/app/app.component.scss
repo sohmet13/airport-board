@@ -1,12 +1,11 @@
 @import 'src/styles/variables';
 
 :host {
-  display: flex;
-  flex-direction: column;
+  display: block;
   margin: 50px;
 }
 
-h1 {
+.title {
   color: $indigoLight;
   cursor: default;
 }
@@ -17,15 +16,19 @@ h1 {
   max-width: 400px;
   justify-content: space-between;
   color: $indigo;
-  margin: 50px 0 100px;
 
-  span:hover, .active {
+  &_margin {
+    margin: 50px 0 100px;
+  }
+
+  &__title:hover {
     outline: none;
     color: $indigoDark;
     cursor: pointer;
   }
 
-  .active {
+  &__title_active {
+    @extend .filters__title:hover;
     border-bottom: 3px solid $indigoDark;
   }
 }

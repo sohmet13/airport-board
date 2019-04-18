@@ -1,7 +1,7 @@
-<span class="period" *ngIf="flightData">
+<span class="period period_margin" *ngIf="flightData">
   {{'Рейсы за ' +
   getFlightService.requestTime.day +
-  '.' +
+  ' ' +
   months[getFlightService.requestTime.month - 1] +
   ' ' +
   getFlightService.requestTime.hour +
@@ -10,36 +10,38 @@
   ':00'}}
 </span>
 
-<div class="search">
-  <input class="search-child" type="text" placeholder="Поиск по номеру рейса" [(ngModel)]="search">
-  <button class="search-child" (click)="toggleDelayed()">{{buttonText}}</button>
+<div class="search search_border-bottom">
+  <input class="search__element search__element_flex" type="text" placeholder="Поиск по номеру рейса" [(ngModel)]="search">
+  <button class="search__element search__element_cursor-pointer" (click)="toggleDelayed()">{{buttonText}}</button>
 </div>
 
-<ng-container *ngIf="flightData; else error">
-  <div class="table">
-    <div class="flight"
-         *ngFor="let flight of flightData | filter:'status':filterValue | filter:'flightNumber':search">
-      <div class="left-inf">
-        <span>{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
-        <span>{{flight.arrivalOrDeparturePlace}}</span>
-      </div>
+<div class="table">
+  <ng-container *ngIf="flightData; else error">
+    <div class="flights-container">
+      <div class="flight table__item_border"
+           *ngFor="let flight of flightData | filter:'status':filterValue | filter:'flightNumber':search">
+        <div class="flight__left-text-block">
+          <span class="flight__text-item flight__text-item_margin">{{flight.arrivalOrDepartureTime | date:'HH:mm'}}</span>
+          <span class="flight__text-item">{{flight.arrivalOrDeparturePlace}}</span>
+        </div>
 
-      <div class="right-inf">
-        <span>{{flight.airlineCode + ' ' + flight.flightNumber}}</span>
-        <span>{{flight.arrivalOrDepartureGate}}</span>
-        <span>{{flight.status}}</span>
-      </div>
+        <div class="flight__right-text-block">
+          <span class="flight__text-item flight__text-item_fixed-width">{{flight.airlineCode + ' ' + flight.flightNumber}}</span>
+          <span class="flight__text-item flight__text-item_fixed-width">{{flight.arrivalOrDepartureGate}}</span>
+          <span class="flight__text-item">{{flight.status}}</span>
+        </div>
 
+      </div>
     </div>
-  </div>
 
-  <div class="nothing-found flight" *ngIf="flightData">
-    <span>По вашему запросу ничего не найдено</span>
-  </div>
-</ng-container>
+    <div class="table__no-flights table__no-flights_display-none table__item_border" *ngIf="flightData">
+      <span>По вашему запросу ничего не найдено</span>
+    </div>
+  </ng-container>
 
-<ng-template #error>
-  <div class="flight error">
-    <span>Произошла ошибка при получении данных с сервера. Попробуйте повторить запрос</span>
-  </div>
-</ng-template>
+  <ng-template #error>
+    <div class="table__no-flights table__no-flights_error table__item_border">
+      <span>Произошла ошибка при получении данных с сервера. Попробуйте повторить запрос</span>
+    </div>
+  </ng-template>
+</div>
